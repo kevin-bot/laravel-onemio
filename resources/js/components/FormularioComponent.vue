@@ -33,12 +33,19 @@
         },
         methods:{
             nuevaTarea(){
-                let tarea = {
-                    id: 2,
-                    nombre: this.nombre,
-                    descripcion: this.descripcion
+                let tarea = {                    
+                    titulo: this.nombre,
+                    descripcion: this.descripcion,
+                    nombre_imagen: this.nombre_imagen,
+                    imagen: this.imagen_miniatura
                 }
-                this.$emit('nueva',tarea)
+                axios.post('/tarea', tarea). then( (response) => {
+                    console.log(response.data);
+                }) .catch ((e) =>{
+
+                } ) 
+                //this.$emit('nueva',tarea)
+
                 this.nombre = ''
                 this.descripcion = ''
             },

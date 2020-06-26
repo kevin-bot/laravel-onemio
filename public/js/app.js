@@ -1943,11 +1943,15 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     nuevaTarea: function nuevaTarea() {
       var tarea = {
-        id: 2,
-        nombre: this.nombre,
-        descripcion: this.descripcion
+        titulo: this.nombre,
+        descripcion: this.descripcion,
+        nombre_imagen: this.nombre_imagen,
+        imagen: this.imagen_miniatura
       };
-      this.$emit('nueva', tarea);
+      axios.post('/tarea', tarea).then(function (response) {
+        console.log(response.data);
+      })["catch"](function (e) {}); //this.$emit('nueva',tarea)
+
       this.nombre = '';
       this.descripcion = '';
     },
