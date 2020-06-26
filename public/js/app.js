@@ -1924,11 +1924,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       nombre: '',
-      descripcion: ''
+      descripcion: '',
+      nombre_imagen: '',
+      imagen_miniatura: ''
     };
   },
   methods: {
@@ -1941,6 +1950,22 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('nueva', tarea);
       this.nombre = '';
       this.descripcion = '';
+    },
+    cargarImagen_Of_disco: function cargarImagen_Of_disco(e) {
+      var file = e.target.files[0];
+      this.nombre_imagen = file.name;
+      this.mostrar_imagen(file);
+    },
+    mostrar_imagen: function mostrar_imagen(file) {
+      var _this = this;
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this.imagen_miniatura = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 });
@@ -37609,7 +37634,7 @@ var render = function() {
         _c(
           "form",
           {
-            attrs: { action: "" },
+            attrs: { action: "", enctype: "multipart/form-data" },
             on: {
               submit: function($event) {
                 $event.preventDefault()
@@ -37664,6 +37689,24 @@ var render = function() {
                 }
               }
             }),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control-file mt-2",
+              attrs: { type: "file" },
+              on: { change: _vm.cargarImagen_Of_disco }
+            }),
+            _vm._v(" "),
+            _c("figure", [
+              _c("img", {
+                staticClass: "mt-2",
+                attrs: {
+                  src: _vm.imagen_miniatura,
+                  alt: "Imagen",
+                  width: "100",
+                  height: "100"
+                }
+              })
+            ]),
             _vm._v(" "),
             _c(
               "button",
