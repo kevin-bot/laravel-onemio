@@ -20,7 +20,13 @@
             }
         },
         mounted() {
-            console.log('Component mounted.')
+            
+            axios.get('/tarea') . then( (res) => {
+                this.tareasvec = res.data;
+            }) .catch ( (e) => {
+
+            })
+        
         },
         methods:{
             creartarea(tarea){

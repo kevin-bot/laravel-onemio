@@ -6,11 +6,14 @@
             <div class="card-body">
             
                 <input v-if="modoeditar" type="text" class="form-control" v-model="tarea.nombre">
-                <h3 v-else>{{tarea.nombre}}</h3>                    
+                <h3 v-else>{{tarea.titulo}}</h3>                    
 
                 <input v-if="modoeditar" type="text" class="form-control" v-model="tarea.descripcion">
-                <p v-else>{{tarea.descripcion}}</p>                                            
+                <p v-else>{{tarea.descripcion}}</p>     
 
+                <figure>
+                    <img :src="imagencomputed" alt="Imagen" width="100" height="100" class="mt-2">
+                </figure>                
             </div>
             <div class="card-footer">
                     <button v-if="modoeditar" type="submit" 
@@ -33,7 +36,8 @@
         props: ['tarea'],
         data(){
             return {
-                modoeditar : false
+                modoeditar : false,
+                imagenMiniatura: "\\imagenes\\" + this.tarea.imagen
             }
         },
         methods:{
@@ -47,6 +51,11 @@
             eliminar(){
                 this.$emit('eliminar');
             }
+        },
+        computed:{
+            imagencomputed(){
+              return this.imagenMiniatura;
+         }
         }
 
     }

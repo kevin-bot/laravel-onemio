@@ -1942,6 +1942,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     nuevaTarea: function nuevaTarea() {
+      var _this = this;
+
       var tarea = {
         titulo: this.nombre,
         descripcion: this.descripcion,
@@ -1949,9 +1951,12 @@ __webpack_require__.r(__webpack_exports__);
         imagen: this.imagen_miniatura
       };
       axios.post('/tarea', tarea).then(function (response) {
-        console.log(response.data);
-      })["catch"](function (e) {}); //this.$emit('nueva',tarea)
+        var tarea = response.data;
 
+        _this.$emit('nueva', tarea);
+      })["catch"](function (e) {
+        console.log(e);
+      });
       this.nombre = '';
       this.descripcion = '';
     },
@@ -1961,15 +1966,20 @@ __webpack_require__.r(__webpack_exports__);
       this.mostrar_imagen(file);
     },
     mostrar_imagen: function mostrar_imagen(file) {
-      var _this = this;
+      var _this2 = this;
 
       var reader = new FileReader();
 
       reader.onload = function (e) {
-        _this.imagen_miniatura = e.target.result;
+        _this2.imagen_miniatura = e.target.result;
       };
 
       reader.readAsDataURL(file);
+    }
+  },
+  computed: {
+    imagencomputed: function imagencomputed() {
+      return this.imagen_miniatura;
     }
   }
 });
@@ -2006,7 +2016,11 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
+    var _this = this;
+
+    axios.get('/tarea').then(function (res) {
+      _this.tareasvec = res.data;
+    })["catch"](function (e) {});
   },
   methods: {
     creartarea: function creartarea(tarea) {
@@ -2062,11 +2076,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['tarea'],
   data: function data() {
     return {
-      modoeditar: false
+      modoeditar: false,
+      imagenMiniatura: "\\imagenes\\" + this.tarea.imagen
     };
   },
   methods: {
@@ -2079,6 +2097,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     eliminar: function eliminar() {
       this.$emit('eliminar');
+    }
+  },
+  computed: {
+    imagencomputed: function imagencomputed() {
+      return this.imagenMiniatura;
     }
   }
 });
@@ -37704,7 +37727,7 @@ var render = function() {
               _c("img", {
                 staticClass: "mt-2",
                 attrs: {
-                  src: _vm.imagen_miniatura,
+                  src: _vm.imagencomputed,
                   alt: "Imagen",
                   width: "100",
                   height: "100"
@@ -37826,7 +37849,7 @@ var render = function() {
                 }
               }
             })
-          : _c("h3", [_vm._v(_vm._s(_vm.tarea.nombre))]),
+          : _c("h3", [_vm._v(_vm._s(_vm.tarea.titulo))]),
         _vm._v(" "),
         _vm.modoeditar
           ? _c("input", {
@@ -37850,7 +37873,19 @@ var render = function() {
                 }
               }
             })
-          : _c("p", [_vm._v(_vm._s(_vm.tarea.descripcion))])
+          : _c("p", [_vm._v(_vm._s(_vm.tarea.descripcion))]),
+        _vm._v(" "),
+        _c("figure", [
+          _c("img", {
+            staticClass: "mt-2",
+            attrs: {
+              src: _vm.imagencomputed,
+              alt: "Imagen",
+              width: "100",
+              height: "100"
+            }
+          })
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-footer" }, [

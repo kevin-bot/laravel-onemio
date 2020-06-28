@@ -11,7 +11,7 @@
 
                         <input type="file" class="form-control-file mt-2" @change="cargarImagen_Of_disco">             
                         <figure>
-                            <img :src="imagen_miniatura" alt="Imagen" width="100" height="100" class="mt-2">
+                            <img :src="imagencomputed" alt="Imagen" width="100" height="100" class="mt-2">
                         </figure>           
                         <button type="submit" class="btn btn-success mt-2">Guardar</button>
                     </form>                    
@@ -28,9 +28,11 @@
                 nombre : '',
                 descripcion : '',
                 nombre_imagen: '',
-                imagen_miniatura: ''
+                imagen_miniatura: '',
+               
             }
-        },
+        }
+        ,
         methods:{
             nuevaTarea(){
                 let tarea = {                    
@@ -40,18 +42,17 @@
                     imagen: this.imagen_miniatura
                 }
                 axios.post('/tarea', tarea). then( (response) => {
-                    console.log(response.data);
+                    const tarea = response.data
+                    this.$emit('nueva',tarea)
                 }) .catch ((e) =>{
-
-                } ) 
-                //this.$emit('nueva',tarea)
-
+                    console.log(e)
+                } )             
                 this.nombre = ''
-                this.descripcion = ''
+                this.descripcion = ''               
             },
             cargarImagen_Of_disco(e){
                 let file = e.target.files[0];
-                this.nombre_imagen = file.name;
+                this.nombre_imagen = file.name;                
                 this.mostrar_imagen(file)
             },
             mostrar_imagen(file){
@@ -60,6 +61,11 @@
                     this.imagen_miniatura = e.target.result;
                 }
                 reader.readAsDataURL(file);
+            }
+        },
+        computed:{
+            imagencomputed(){
+              return this.imagen_miniatura;
             }
         }
     }
